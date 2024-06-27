@@ -2,7 +2,7 @@ public class Ray {
   float length = 0;
   int side = 0;
   boolean visible = false;
-  
+  int rayColor = 1; 
   public void cast(PVector p, PVector direction) {
     fill(50, 200, 50);
     PVector m = direction;
@@ -43,6 +43,7 @@ public class Ray {
 
       if (h < 0 || w < 0 || h >=  scene.length || w >= scene.length ||scene[w][h] != 0) {
         length = dist(p.x, p.y, m.x, m.y);
+        this.rayColor = scene[w][h]; 
         if (visible) circle(m.x, m.y, 2);
 
         return;

@@ -6,13 +6,13 @@ public class Game {
         scene = s;
     }
     public void fovRays(boolean isRayDraw) {
+        colorMode(HSB);
         PVector rayDir = player.dir.copy();
         float fov = player.getFOVangle();
         rayDir.mult(0.1);
         float angle = -fov / 2;
         rayDir.rotate(radians(angle));
-        int optimization = 1;
-        int raysCount = width/optimization;
+        int raysCount = width;
         float angleStep = fov / raysCount;
         for (int i = 0; i < raysCount; i++) {
             strokeWeight(1);
@@ -23,17 +23,15 @@ public class Game {
             Ray ray = new Ray();
             ray.visible = isRayDraw;
             ray.cast(player.pos, pRayDir);
-            if (ray.side == 1) stroke(200, 200, 200);
-            if (ray.side == 0) stroke(100, 100, 100);
-            drawVerticalLine(optimization*i, ray.length*0.05);
-              
-            }
-            
-            
-            
-            
+            float brightness = 1;
+            if (ray.side == 1) brightness = 1; 
+            if (ray.side == 0) brightness = 0.5; 
+            drawVerticalLine(i, ray.length * 0.05, setBrightness(getColor(ray.rayColor),brightness));
         }
-        public void perpRays(boolean isRayDraw) {
+        colorMode(RGB);
+    }
+    
+    public void perpRays(boolean isRayDraw) {
         PVector camV = PVector.sub(player.camL, player.camR);
         float camVLen = camV.mag();
         PVector camVnorm = new PVector(camV.x, camV.y).normalize();
@@ -59,10 +57,10 @@ public class Game {
             if (ray.side == 0) stroke(100, 100, 100);
             if (x > prevX) {
                 for (int j = (int)prevX; j <x; j++) {
-                   // drawVerticalLine(j, ray.length);
+                    // drawVerticalLine(j, ray.length);
                 }
             }
-           // drawVerticalLine(x, ray.length);
+            // drawVerticalLine(x, ray.length);
             prevX = x;
         }
     }
@@ -72,7 +70,7 @@ public class Game {
         int cs = height / sh;
         fill(40,40,40);
         stroke(0,0,0);
-        rect(0, 0, sh*cs, sw*cs); 
+        rect(0, 0, sh * cs, sw * cs); 
         stroke(52, 52, 52);
         strokeWeight(3);
         for (int i = 0; i < sh; ++i) {
@@ -81,7 +79,7 @@ public class Game {
         }
         for (int i = 0; i < sh; ++i) {
             int y = i * cs;
-            line(2, y, sw*cs, y);
+            line(2, y, sw * cs, y);
         }
         for (int i = 0; i < sh; ++i) {
             for (int j = 0; j < sw; ++j) {
@@ -103,13 +101,13 @@ public class Game {
         line(player.pos,player.camR);
     }
 }
-public void drawVerticalLine(int x, float wallDist) {
+public void drawVerticalLine(int x, float wallDist, color col) {
     int lineHeight = (int)(height / wallDist);
     int drawStart = -lineHeight / 2 + height / 2;
     if (drawStart < 0) drawStart = 0;
     int drawEnd = lineHeight / 2 + height / 2;
     if (drawEnd >= height) drawEnd = height - 1;
-   // strokeWeight(5);
-   // line(x, drawStart, x, drawEnd);
-   drawLine(x, drawStart, drawEnd, color(50, 50, 50));
+    strokeWeight(5);
+    // line(x, drawStart, x, drawEnd);
+    drawLine(x, drawStart, drawEnd, col);
 }
