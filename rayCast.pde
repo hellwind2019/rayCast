@@ -37,7 +37,5 @@ void renderBuffer(){
 }
 void cleanBuffer(){
     buffer = new int[900*900];
-//   for(int i = 0; i < buffer.length; i++){
-//         buffer[i] = color(0,0,0);
-//     }
+
 }
