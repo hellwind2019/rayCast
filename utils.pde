@@ -17,7 +17,7 @@ void drawFPS() {
   text(fps, 10, 10);
 }
 void drawPixel(int x, int y, color col) {
-    int offcet = (x + y * height);
+    int offcet = ( x+ y * width);
     buffer[offcet] = col;
     
     

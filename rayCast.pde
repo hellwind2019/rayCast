@@ -1,41 +1,69 @@
+import java.awt.Robot;
+Robot robot;
+float currentRotationX = 0;
+float mouseDist = 0;
+float sens = 30;
+final int SCREEN_HEIGHT = 600;
+final int SCREEN_WIDTH = 900;
 int bufferSize = width * height;
-Player player = new Player(new PVector(303, 401));
+Player player = new Player(new PVector(181, 395));
 Game game = new Game(player, scene);
-PImage imageData = createImage(900, 900, RGB);
-color[] buffer = new color[900*900];
+PImage imageData = createImage(SCREEN_WIDTH, SCREEN_HEIGHT, RGB);
+color[] buffer = new color[SCREEN_HEIGHT * SCREEN_WIDTH];
+
+boolean threadFlag = true;
+void settings() {
+    size(SCREEN_WIDTH, SCREEN_HEIGHT);
+    
+}
 void setup() {
-    size(900, 900);
-    frameRate(300);
-    println(player.getFOVangle());
+  surface.setLocation((displayWidth / 2) - (width / 2),(displayHeight / 2) - (height / 2));
+  frameRate(80);
+  println(player.getFOVangle());
+  try {
+      robot = new Robot();
+    }
+  catch(Throwable e) {
+}
 }
 void draw() {
     background(18, 18, 18);
-
-    game.fovRays(false);
- 
+    
+    
+    game.fovRaysFishEyeCorr(false);
+    game.handlePlayerMovement();
     renderBuffer();
-   
-    drawFPS();
+    
     scale(0.35);
-    translate(50, 50 );
+    translate(50, 50);
     game.drawGrid();
     game.drawPlayer();
+    scale(4);
+    drawFPS();
     
+}
 
+void mouseMoved() { 
+    mouseDist = mouseX - width / 2 + 9;
+    currentRotationX += mouseDist / sens;
+    player.rotateToAngle(mouseDist / sens);
+    robot.mouseMove(displayWidth / 2, displayHeight / 2);
 }
 void keyPressed() {
-    player.move(key);
+    game.handlePressedKeys(key);
 }
-void renderBuffer(){
+void keyReleased() {
+    game.handleReleasedKeys(key); 
+}
+void renderBuffer() {
     imageData.loadPixels();
-    for(int i = 0; i < imageData.pixels.length; i++){
+    for (int i = 0; i < imageData.pixels.length; i++) {
         imageData.pixels[i] = buffer[i];
-    }
+}
     imageData.updatePixels();
     image(imageData, 0, 0);
     cleanBuffer();
 }
-void cleanBuffer(){
-    buffer = new int[900*900];
-
+void cleanBuffer() {
+    buffer = new int[SCREEN_WIDTH * SCREEN_HEIGHT];
 }
