@@ -54,9 +54,7 @@ public void renderBuffer(){
 }
 public void cleanBuffer(){
     buffer = new int[900*900];
-//   for(int i = 0; i < buffer.length; i++){
-//         buffer[i] = color(0,0,0);
-//     }
+
 }
 public class Game {
     Player player;
@@ -66,13 +64,13 @@ public class Game {
         scene = s;
     }
     public void fovRays(boolean isRayDraw) {
+        colorMode(HSB);
         PVector rayDir = player.dir.copy();
         float fov = player.getFOVangle();
         rayDir.mult(0.1f);
         float angle = -fov / 2;
         rayDir.rotate(radians(angle));
-        int optimization = 1;
-        int raysCount = width/optimization;
+        int raysCount = width;
         float angleStep = fov / raysCount;
         for (int i = 0; i < raysCount; i++) {
             strokeWeight(1);
@@ -83,17 +81,15 @@ public class Game {
             Ray ray = new Ray();
             ray.visible = isRayDraw;
             ray.cast(player.pos, pRayDir);
-            if (ray.side == 1) stroke(200, 200, 200);
-            if (ray.side == 0) stroke(100, 100, 100);
-            drawVerticalLine(optimization*i, ray.length*0.05f);
-              
-            }
-            
-            
-            
-            
+            float brightness = 1;
+            if (ray.side == 1) brightness = 1; 
+            if (ray.side == 0) brightness = 0.5f; 
+            drawVerticalLine(i, ray.length * 0.05f, setBrightness(getColor(ray.rayColor),brightness));
         }
-        public void perpRays(boolean isRayDraw) {
+        colorMode(RGB);
+    }
+    
+    public void perpRays(boolean isRayDraw) {
         PVector camV = PVector.sub(player.camL, player.camR);
         float camVLen = camV.mag();
         PVector camVnorm = new PVector(camV.x, camV.y).normalize();
@@ -119,10 +115,10 @@ public class Game {
             if (ray.side == 0) stroke(100, 100, 100);
             if (x > prevX) {
                 for (int j = (int)prevX; j <x; j++) {
-                   // drawVerticalLine(j, ray.length);
+                    // drawVerticalLine(j, ray.length);
                 }
             }
-           // drawVerticalLine(x, ray.length);
+            // drawVerticalLine(x, ray.length);
             prevX = x;
         }
     }
@@ -132,7 +128,7 @@ public class Game {
         int cs = height / sh;
         fill(40,40,40);
         stroke(0,0,0);
-        rect(0, 0, sh*cs, sw*cs); 
+        rect(0, 0, sh * cs, sw * cs); 
         stroke(52, 52, 52);
         strokeWeight(3);
         for (int i = 0; i < sh; ++i) {
@@ -141,7 +137,7 @@ public class Game {
         }
         for (int i = 0; i < sh; ++i) {
             int y = i * cs;
-            line(2, y, sw*cs, y);
+            line(2, y, sw * cs, y);
         }
         for (int i = 0; i < sh; ++i) {
             for (int j = 0; j < sw; ++j) {
@@ -163,15 +159,15 @@ public class Game {
         line(player.pos,player.camR);
     }
 }
-public void drawVerticalLine(int x, float wallDist) {
+public void drawVerticalLine(int x, float wallDist, int col) {
     int lineHeight = (int)(height / wallDist);
     int drawStart = -lineHeight / 2 + height / 2;
     if (drawStart < 0) drawStart = 0;
     int drawEnd = lineHeight / 2 + height / 2;
     if (drawEnd >= height) drawEnd = height - 1;
-   // strokeWeight(5);
-   // line(x, drawStart, x, drawEnd);
-   drawLine(x, drawStart, drawEnd, color(50, 50, 50));
+    strokeWeight(5);
+    // line(x, drawStart, x, drawEnd);
+    drawLine(x, drawStart, drawEnd, col);
 }
 public class Player{
     PVector pos;
@@ -221,7 +217,7 @@ public class Ray {
   float length = 0;
   int side = 0;
   boolean visible = false;
-  
+  int rayColor = 1; 
   public void cast(PVector p, PVector direction) {
     fill(50, 200, 50);
     PVector m = direction;
@@ -262,6 +258,7 @@ public class Ray {
 
       if (h < 0 || w < 0 || h >=  scene.length || w >= scene.length ||scene[w][h] != 0) {
         length = dist(p.x, p.y, m.x, m.y);
+        this.rayColor = scene[w][h]; 
         if (visible) circle(m.x, m.y, 2);
 
         return;
@@ -289,9 +286,9 @@ public static  int[][] scene = {
     {1, 0, 0, 0, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 1} ,
     {1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1} ,
     {1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1} ,
-    {1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1} ,
+    {1, 0, 0, 1, 0, 5, 4, 0, 0, 0, 0, 0, 0, 0, 0, 1} ,
     {1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1} ,
-    {1, 0, 1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 1, 0, 0, 1} ,
+    {1, 0, 1,2, 3, 4, 0, 0, 0, 1, 0, 1, 1, 0, 0, 1} ,
     {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1} ,
     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
 };
@@ -323,6 +320,26 @@ public void drawLine(int x1, int y1, int y2, int col) {
     for (int y = y1; y < y2; y++) {
         drawPixel(x1, y, col);
     }
+}
+public int getColor(int index){
+switch ( index) {
+   case 1 : return color(0xFF292625); 
+   case 2 : return color(50, 180, 180);
+   case 3 : return color(120, 210, 180);
+   case 4 : return color(150, 120, 180); 
+   case 5 : return color(200, 190, 180); 
+   default :
+    return color(0, 50, 50);
+}
+}
+public int setBrightness(int col, float br)
+{
+    float h, s, b;
+    h = hue(col);
+    s = saturation(col);
+    b = brightness(col);
+    b *=br;
+    return color(h,s,b);
 }
 
 
