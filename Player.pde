@@ -1,12 +1,12 @@
 public class Player {
   PVector pos;
-  PVector dir = new PVector(0, 30);
-  PVector cam = new PVector(30, 0);
+  PVector dir = new PVector(0, 0.4);
+  PVector cam = new PVector(0.4, 0);
   PVector pDir;
   PVector camL;
   PVector camR;
   float rotSpeed = PI/2 * 0.1;
-  float movSpeed = 0.02;
+  float movSpeed = 20;
 
   public Player(PVector _pos) {
     pos = _pos;
@@ -26,56 +26,30 @@ public class Player {
     cam.rotate(radians(angle));
   }
   public void move(Keys keys) {
+    float deltaMovSpeed = movSpeed*(delta/1000.0);
     if (keys.up.active) {
-      pos.x += dir.x * movSpeed;
-      pos.y += dir.y * movSpeed;
+      pos.x += dir.x * deltaMovSpeed;
+      pos.y += dir.y * deltaMovSpeed;
     }
     if (keys.down.active) {
-      pos.x -= dir.x * movSpeed;
-      pos.y -= dir.y * movSpeed;
+      pos.x -= dir.x * deltaMovSpeed;
+      pos.y -= dir.y * deltaMovSpeed;
     }
     if(keys.left.active) { 
       PVector temp = dir.copy();
       temp.rotate(radians(-90));
-      pos.x += temp.x * movSpeed;
-      pos.y += temp.y * movSpeed;
+      pos.x += temp.x * deltaMovSpeed;
+      pos.y += temp.y * deltaMovSpeed;
     }
       if(keys.right.active) { 
       PVector temp = dir.copy();
       temp.rotate(radians(90));
-      pos.x += temp.x * movSpeed;
-      pos.y += temp.y * movSpeed;
+      pos.x += temp.x * deltaMovSpeed;
+      pos.y += temp.y * deltaMovSpeed;
     }
    
     pDir = PVector.add(pos, dir);
     camL = PVector.add(pDir, cam);
     camR = PVector.sub(pDir, cam);
   }
-  public void moveBad(char key) {
-    if (key == 'w' || key == 'W' || key == 'ц') {
-      pos.x += dir.x * movSpeed;
-      pos.y += dir.y * movSpeed;
-    }
-    if (key == 'e' || key == 'E') {
-      PVector temp = dir.copy();
-      temp.rotate(radians(45));
-      pos.x += temp.x * movSpeed;
-      pos.y += temp.y * movSpeed;
-    }
-    if (key == 's' || key == 'S'|| key == 'і') {
-      pos.x -= dir.x * movSpeed;
-      pos.y -= dir.y * movSpeed;
-    }
-    if (key == 'a' || key == 'A'|| key == 'ф') {
-      dir.rotate(-rotSpeed);
-      cam.rotate(-rotSpeed);
-    }
-    if (key == 'd' || key == 'D'|| key == 'в') {
-      dir.rotate( rotSpeed);
-      cam.rotate( rotSpeed);
-    }
-    pDir = PVector.add(pos, dir);
-    camL = PVector.add(pDir, cam);
-    camR = PVector.sub(pDir, cam);
-  }
-}
+ }

@@ -19,13 +19,11 @@ void drawFPS() {
 void drawPixel(int x, int y, color col) {
     int offcet = ( x+ y * width);
     buffer[offcet] = col;
-    
-    
 }
 void drawLine(int x1, int y1, int y2, color col) {
-    for (int y = y1; y < y2; y++) {
-        drawPixel(x1, y, col);
-    }
+  for (int y = y1; y < y2; y++) {
+      drawPixel(x1, y, col);
+  }
 }
 color getColor(int index){
 switch ( index) {
