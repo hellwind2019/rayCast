@@ -29,9 +29,9 @@ public class Ray {
                 this.rayColor = level.scene[w][h]; 
                 this.hitCell.set(w,h);
                 this.hitCellXY.set(m);
-                stroke(200, 10, 10);
-                strokeWeight(0.2);
-                line(p.x, p.y, m.x, m.y);
+                // stroke(200, 10, 10);
+                // strokeWeight(0.2);
+                // line(p.x, p.y, m.x, m.y);
                 return;
             }
         }

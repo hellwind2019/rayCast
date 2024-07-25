@@ -2,7 +2,7 @@ import java.awt.Robot;
 Robot robot;
 float currentRotationX = 0;
 float mouseDist = 0;
-float sens = 30;
+float sens = 1/30.0;
 final int SCREEN_HEIGHT = 600;
 final int SCREEN_WIDTH = 900;
 float MINMAP_SCALE = 15;
@@ -27,7 +27,7 @@ void setup() {
     halfHeight =(int)(displayHeight*0.5);
     halfWidth =(int)(displayWidth *0.5);
    surface.setLocation((displayWidth / 2) - (width / 2),(displayHeight / 2) - (height / 2));
-  frameRate(90);
+  frameRate(300);
   println(player.getFOVangle());
   try {
       robot = new Robot();
@@ -60,8 +60,7 @@ void draw() {
 void mouseMoved() { 
     if(!(mouseX >= displayWidth/2 + width/2)){
         mouseDist = mouseX - width / 2 + 9;
-        currentRotationX += mouseDist / sens;
-        player.rotateToAngle(mouseDist / sens);
+        player.rotateToAngle(mouseDist*sens);
     }
   robot.mouseMove(halfWidth, halfHeight);
 }

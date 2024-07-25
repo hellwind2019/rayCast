@@ -25,12 +25,12 @@ public class Game {
   }
 
    public void fovRaysFishEyeCorr(boolean isVisible) {
-    int RAYS_COUNT =300; //width/RAYS_FACTOR;
+    int RAYS_COUNT =width/RAYS_FACTOR;
     //TODO: Make a way to correct resolution, RAYS_FACTOR is a bad way, have to use like fractional part 
     colorMode(HSB);
     for (int i = 0; i < RAYS_COUNT; i++) {
       float t = i/(float)RAYS_COUNT;
-      t=0.5;
+      // t=0.5;
       PVector planePoint = PVector.lerp(player.camL, player.camR, t);
       PVector dirPoint = PVector.lerp(player.pos, planePoint, 0.1);
       Ray ray = new Ray();
@@ -94,7 +94,7 @@ public void drawTexturedLine(int x, Ray ray){
   if (drawEnd >= height) drawEnd = height - 1;
 
   PImage wall = level.getWall((int)ray.hitCell.x, (int)ray.hitCell.y);
-  println(ray.hitCellXY.x +" " + ray.hitCellXY.y);
+  // println(ray.hitCellXY.x +" " + ray.hitCellXY.y);
   for(int y = drawStart; y <=drawEnd; y++){
 
   }
@@ -108,6 +108,6 @@ public void drawVerticalLine(int x, float wallDist, color col) {
   if (drawEnd >= height) drawEnd = height - 1;
   
   drawLine(x, 0, drawStart, color(100, 50, 150));
-  // drawLine(x, drawStart, drawEnd, col);
+  drawLine(x, drawStart, drawEnd, col);
   drawLine(x, drawEnd, height, color(159, 25, 150));
 }
