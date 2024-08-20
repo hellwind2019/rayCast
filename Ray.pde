@@ -28,7 +28,7 @@ public class Ray {
                 this.length = perpWallDist;
                 this.rayColor = level.scene[w][h]; 
                 this.hitCell.set(w,h);
-                this.hitCellXY.set(m);
+                this.hitCellXY.set(m.y, m.x);
                 // stroke(200, 10, 10);
                 // strokeWeight(0.2);
                 // line(p.x, p.y, m.x, m.y);

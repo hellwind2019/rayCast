@@ -92,11 +92,24 @@ public void drawTexturedLine(int x, Ray ray){
   if (drawStart < 0) drawStart = 0;
   int drawEnd = lineHeight / 2 + height / 2;
   if (drawEnd >= height) drawEnd = height - 1;
+  //Find out is it X or Y side of wall
+  boolean isXSide = true;
+  float xFrac = ray.hitCellXY.x - floor(ray.hitCellXY.x);
+  float yFrac = ray.hitCellXY.y - floor(ray.hitCellXY.y);
+  if(xFrac < yFrac) isXSide = false;
 
   PImage wall = level.getWall((int)ray.hitCell.x, (int)ray.hitCell.y);
-  // println(ray.hitCellXY.x +" " + ray.hitCellXY.y);
-  for(int y = drawStart; y <=drawEnd; y++){
+  // println(ray.hitCellXY.x +" " + ray.hitCellXY.y + " " +  ray.hitCell.x +" "+ray.hitCell.y);
+  wall.loadPixels();
+  int imageX = 0;
+  int imageY = 0;
+  if(isXSide) imageX = int(map(xFrac, 0, 1, 0, wall.width));
+  else imageX = int(map(yFrac, 0,1,0, wall.width));
 
+  for(int y = drawStart; y <=drawEnd; y++){
+    imageY = int(map(y, drawStart, drawEnd, 0, wall.height));
+    color pixel = wall.get(imageX, imageY);
+    drawPixel(x, y, pixel);
   }
 
 }
@@ -108,6 +121,6 @@ public void drawVerticalLine(int x, float wallDist, color col) {
   if (drawEnd >= height) drawEnd = height - 1;
   
   drawLine(x, 0, drawStart, color(100, 50, 150));
-  drawLine(x, drawStart, drawEnd, col);
+  // drawLine(x, drawStart, drawEnd, col);
   drawLine(x, drawEnd, height, color(159, 25, 150));
 }

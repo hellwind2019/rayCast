@@ -14,6 +14,7 @@ public class Level {
         return h < 1 || w < 1 || h>= this.height-1 || w >= this.width-1;
     }
     public PImage getWall(int x, int y){
+        //Maybe swap X Y
         if(this.scene[x][y] != 0){
             return this.wall1;
         }

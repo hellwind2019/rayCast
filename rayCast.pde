@@ -21,7 +21,7 @@ void settings() {
     size(SCREEN_WIDTH, SCREEN_HEIGHT);
 }
 void setup() {
-    wall = loadImage("assets/wall1.png");
+    wall = loadImage("assets/troll.jpg");
     level = new Level(sceneArray, wall);
     game = new Game(player, level.scene);
     halfHeight =(int)(displayHeight*0.5);
