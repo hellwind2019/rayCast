@@ -1,7 +1,7 @@
 public class Player {
   PVector pos;
-  PVector dir = new PVector(0, 0.4);
-  PVector cam = new PVector(0.4, 0);
+  PVector dir = new PVector(0, 0.5);
+  PVector cam = new PVector(0.5, 0);
   PVector pDir;
   PVector camL;
   PVector camR;
@@ -62,6 +62,19 @@ public class Player {
          pos.x += temp.x * deltaMovSpeed*diagSpeedFactor;
          pos.y += temp.y * deltaMovSpeed*diagSpeedFactor;
       }
+      if(keys.down.active && keys.left.active){
+         PVector temp = dir.copy();
+         temp.rotate(radians(215));
+         pos.x += temp.x * deltaMovSpeed*diagSpeedFactor;
+         pos.y += temp.y * deltaMovSpeed*diagSpeedFactor;
+      }
+      if(keys.down.active && keys.right.active){
+         PVector temp = dir.copy();
+         temp.rotate(radians(135));
+         pos.x += temp.x * deltaMovSpeed*diagSpeedFactor;
+         pos.y += temp.y * deltaMovSpeed*diagSpeedFactor;
+      }
+
     }
     
 

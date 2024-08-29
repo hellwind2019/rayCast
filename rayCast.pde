@@ -10,6 +10,7 @@ int bufferSize = width * height;
 Player player = new Player(new PVector(3.5, 3.5));
 Level level;
 Game game;
+
 PImage imageData = createImage(SCREEN_WIDTH, SCREEN_HEIGHT, RGB);
 color[] buffer = new color[SCREEN_HEIGHT * SCREEN_WIDTH];
 int lastTime = 0;
@@ -81,4 +82,5 @@ void renderBuffer() {
 }
 void cleanBuffer() {
     buffer = new int[SCREEN_WIDTH * SCREEN_HEIGHT];
+    
 }

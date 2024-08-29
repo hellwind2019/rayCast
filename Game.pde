@@ -88,11 +88,18 @@ public class Game {
 public void drawTexturedLine(int x, Ray ray){
   float wallDist = ray.length;
   int lineHeight = (int)(height / wallDist);
-  int drawStart = -lineHeight / 2 + height / 2;
-  if (drawStart < 0) drawStart = 0;
+int drawStart = -lineHeight / 2 + height / 2;
+if (drawStart < 0) drawStart = 0;
   int drawEnd = lineHeight / 2 + height / 2;
   if (drawEnd >= height) drawEnd = height - 1;
-  //Find out is it X or Y side of wall
+  if(wallDist < 0.5){ //0.5 is a player dir size 
+    float clipping_factor = wallDist/0.5;
+    drawStart *=clipping_factor;
+    drawEnd*=clipping_factor;
+  }
+   
+
+ //Find out is it X or Y side of wall
   boolean isXSide = true;
   float xFrac = ray.hitCellXY.x - floor(ray.hitCellXY.x);
   float yFrac = ray.hitCellXY.y - floor(ray.hitCellXY.y);
